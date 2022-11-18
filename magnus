@@ -125,6 +125,12 @@ class Main(object):
         head.props.title = "Magnus"
         self.w.set_titlebar(head)
 
+        # the about dialog
+        about = Gtk.Button.new_with_mnemonic("?")
+        self.about = about
+        about.connect("clicked", self.show_about_dialog)
+        head.pack_end(about)
+
         # the zoom chooser
         zoom = Gtk.ComboBoxText.new()
         self.zoom = zoom
