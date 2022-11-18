@@ -131,6 +131,12 @@ class Main(object):
         about.connect("clicked", self.show_about_dialog)
         head.pack_end(about)
 
+        # the pointer
+        pointer = Gtk.Button.new_with_mnemonic("+")
+        self.pointer = pointer
+        # pointer.connect("clicked", self.show_about_dialog)
+        head.pack_end(pointer)
+
         # the zoom chooser
         zoom = Gtk.ComboBoxText.new()
         self.zoom = zoom
