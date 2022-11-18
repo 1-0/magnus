@@ -11,6 +11,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Keybinder', '3.0')
 from gi.repository import \
     Gtk, Gdk, GLib, GdkPixbuf, Gio, Keybinder  # noqa: E402
+import cairo
 
 __VERSION__ = "1.0.3"
 
@@ -35,6 +36,7 @@ class Main(object):
         self.refresh_interval = 250
         self.started_by_keypress = False
         self.force_refresh = False
+        self.pointer_state = False
 
     def handle_shutdown(self, app):
         if self.started_by_keypress:
@@ -132,9 +134,10 @@ class Main(object):
         head.pack_end(about)
 
         # the pointer
-        pointer = Gtk.Button.new_with_mnemonic("+")
+        pointer = Gtk.ToggleButton.new_with_mnemonic("+")
         self.pointer = pointer
-        # pointer.connect("clicked", self.show_about_dialog)
+        pointer.connect("toggled", self.toggle_pointer_state)
+        self.pointer.set_active(True)
         head.pack_end(pointer)
 
         # the zoom chooser
@@ -251,6 +254,10 @@ class Main(object):
         return GdkPixbuf.Pixbuf.new_from_bytes(
             arr, GdkPixbuf.Colorspace.RGB, True, 8,
             width, height, width * len(light))
+
+    def toggle_pointer_state(self, *args):
+        self.pointer_state = not self.pointer_state
+        print("self.pointer_state=" +str(self.pointer_state))
 
     def poll(self, force_refresh=False):
         display = Gdk.Display.get_default()
